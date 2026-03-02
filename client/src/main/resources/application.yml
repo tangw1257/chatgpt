@@ -1,0 +1,8 @@
+server:
+  port: 8090
+agent:
+  id: client-demo-01
+  version: 1.0.0
+  server-http-base: http://localhost:8080
+  server-ws-url: ws://localhost:8080/ws/agent
+  update-check-ms: 30000
