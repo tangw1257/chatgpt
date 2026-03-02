@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8"/>
+    <title>任务控制台</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        td, th { border: 1px solid #ccc; padding: 8px; }
+        form.inline { display: inline; }
+    </style>
+</head>
+<body>
+<h1>服务端任务控制台（Demo）</h1>
+
+<h2>1. 任务编辑</h2>
+<form action="/tasks" method="post">
+    <input type="hidden" name="id"/>
+    <label>任务名：<input name="name" required/></label><br/>
+    <label>Linux 命令：<input name="linuxCommand" value="echo hello world from linux" required/></label><br/>
+    <label>Windows 命令：<input name="windowsCommand" value="cmd /c echo hello world from windows" required/></label><br/>
+    <button type="submit">保存任务</button>
+</form>
+
+<h2>2. 已登记 Client</h2>
+<table>
+    <tr><th>clientId</th><th>Host</th><th>OS</th><th>Version</th><th>LastSeen</th></tr>
+    <tr th:each="c: ${clients}">
+        <td th:text="${c.clientId}"></td>
+        <td th:text="${c.hostName}"></td>
+        <td th:text="${c.osName}"></td>
+        <td th:text="${c.currentVersion}"></td>
+        <td th:text="${c.lastSeen}"></td>
+    </tr>
+</table>
+
+<h2>3. 任务发布</h2>
+<table>
+    <tr><th>任务</th><th>Linux</th><th>Windows</th><th>执行到 Client</th></tr>
+    <tr th:each="t: ${tasks}">
+        <td th:text="${t.name}"></td>
+        <td th:text="${t.linuxCommand}"></td>
+        <td th:text="${t.windowsCommand}"></td>
+        <td>
+            <span th:each="c: ${clients}">
+                <form class="inline" th:action="@{'/tasks/' + ${t.id} + '/assign/' + ${c.clientId}}" method="post">
+                    <button type="submit" th:text="${c.clientId}"></button>
+                </form>
+            </span>
+        </td>
+    </tr>
+</table>
+
+<h2>4. Client 最新版本</h2>
+<div>
+    <div th:text="'Latest: ' + ${update.latestVersion}"></div>
+    <div th:text="'Download: ' + ${update.downloadUrl}"></div>
+    <div th:text="'Notes: ' + ${update.notes}"></div>
+</div>
+
+<h2>5. 执行进度日志</h2>
+<table>
+    <tr><th>Client</th><th>Task</th><th>Progress</th><th>Message</th><th>Time</th></tr>
+    <tr th:each="l: ${logs}">
+        <td th:text="${l.clientId}"></td>
+        <td th:text="${l.taskId}"></td>
+        <td th:text="${l.progress}"></td>
+        <td th:text="${l.message}"></td>
+        <td th:text="${l.time}"></td>
+    </tr>
+</table>
+</body>
+</html>
