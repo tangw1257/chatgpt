@@ -4,3 +4,7 @@ server:
 spring:
   thymeleaf:
     cache: false
+agent:
+  ws:
+    port: 9001
+    path: /ws/agent

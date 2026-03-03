@@ -1,41 +1,29 @@
 package com.example.taskplatform.client.service;
 
-import com.example.taskplatform.client.config.ClientProperties;
-import com.example.taskplatform.client.ws.AgentClientWebSocketHandler;
 import jakarta.annotation.PostConstruct;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 
 @Service
 @EnableScheduling
 public class AgentConnectionService {
 
-    private final AgentClientWebSocketHandler handler;
-    private final ClientProperties properties;
+    private final AgentNettyClientService nettyClientService;
 
-    public AgentConnectionService(AgentClientWebSocketHandler handler, ClientProperties properties) {
-        this.handler = handler;
-        this.properties = properties;
+    public AgentConnectionService(AgentNettyClientService nettyClientService) {
+        this.nettyClientService = nettyClientService;
     }
 
     @PostConstruct
     public void connect() {
-        doConnect();
+        nettyClientService.connect();
     }
 
     @Scheduled(fixedDelay = 5000)
     public void keepAlive() {
-        if (!handler.isConnected()) {
-            doConnect();
-        }
-    }
-
-    private void doConnect() {
-        try {
-            new StandardWebSocketClient().execute(handler, properties.serverWsUrl());
-        } catch (Exception ignored) {
+        if (!nettyClientService.isConnected()) {
+            nettyClientService.connect();
         }
     }
 }

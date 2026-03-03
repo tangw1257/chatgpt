@@ -8,6 +8,7 @@ public record ClientProperties(
         String version,
         String serverHttpBase,
         String serverWsUrl,
-        long updateCheckMs
+        long updateCheckMs,
+        int tcpPort
 ) {
 }
