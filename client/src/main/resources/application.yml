@@ -4,5 +4,6 @@ agent:
   id: client-demo-01
   version: 1.0.0
   server-http-base: http://localhost:8080
-  server-ws-url: ws://localhost:8080/ws/agent
+  server-ws-url: ws://localhost:9001/ws/agent
   update-check-ms: 30000
+  tcp-port: 19090

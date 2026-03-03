@@ -5,7 +5,7 @@ import com.example.taskplatform.common.TaskDefinition;
 import com.example.taskplatform.server.service.RegistryService;
 import com.example.taskplatform.server.service.TaskService;
 import com.example.taskplatform.server.service.UpdateService;
-import com.example.taskplatform.server.ws.AgentWebSocketHandler;
+import com.example.taskplatform.server.ws.AgentMessageRouter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +21,10 @@ public class ConsoleController {
 
     private final RegistryService registryService;
     private final TaskService taskService;
-    private final AgentWebSocketHandler wsHandler;
+    private final AgentMessageRouter wsHandler;
     private final UpdateService updateService;
 
-    public ConsoleController(RegistryService registryService, TaskService taskService, AgentWebSocketHandler wsHandler, UpdateService updateService) {
+    public ConsoleController(RegistryService registryService, TaskService taskService, AgentMessageRouter wsHandler, UpdateService updateService) {
         this.registryService = registryService;
         this.taskService = taskService;
         this.wsHandler = wsHandler;
